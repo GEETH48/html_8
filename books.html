@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate books.xml</title>
+</head>
+<body>
+    <h1>XML Generator for Library Books</h1>
+    <button id="createXML">Create XML</button>
+    <textarea id="outputArea" rows="20" cols="80" readonly></textarea>
+    <script>
+        document.getElementById("createXML").addEventListener("click", function() {
+            const books = [
+                { id: 101, title: "Effective Java", author: "Joshua Bloch", publisher: "Addison-Wesley", price: "45.00", year: 2008 },
+                { id: 102, title: "Introduction to Algorithms", author: "Thomas H. Cormen", publisher: "MIT Press", price: "80.00", year: 2009 },
+                { id: 103, title: "Clean Code", author: "Robert C. Martin", publisher: "Prentice Hall", price: "50.00", year: 2008 },
+                { id: 104, title: "The Pragmatic Programmer", author: "Andrew Hunt", publisher: "Addison-Wesley", price: "42.00", year: 1999 },
+                { id: 105, title: "Design Patterns", author: "Erich Gamma", publisher: "Addison-Wesley", price: "55.00", year: 1994 }
+            ];
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<library>`;
+            books.forEach(book => {
+                xml += `\n  <book id="${book.id}">`;
+                xml += `\n    <title>${book.title}</title>`;
+                xml += `\n    <author>${book.author}</author>`;
+                xml += `\n    <publisher>${book.publisher}</publisher>`;
+                xml += `\n    <price>${book.price}</price>`;
+                xml += `\n    <year>${book.year}</year>`;
+                xml += `\n  </book>`;
+            });
+            xml += "\n</library>";
+            document.getElementById("outputArea").value = xml;
+        });
+    </script>
+</body>
+</html>

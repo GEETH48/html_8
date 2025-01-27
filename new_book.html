@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library XML Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: light gray;
+            color: dark gray;
+        }
+        textarea {
+            width: 100%;
+            margin-top: 10px;
+            background-color:white;
+            border: 1px solid light gray;
+            padding: 10px;
+            resize: none;
+            font-family: monospace;
+            color: light gray;
+        }
+        form {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: light blue;
+            border: 1px solid light blue;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid light gray;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: dark blue;
+        }
+        h1, h2 {
+            color: dark gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Library XML Manager</h1>
+    <h2>Existing XML Document</h2>
+    <textarea id="xmlDisplay" rows="10" readonly>
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <book id="1">
+        <title>The Pragmatic Programmer</title>
+        <author>Andrew Hunt, David Thomas</author>
+        <publisher>Addison-Wesley</publisher>
+        <price>39.99</price>
+        <year>1999</year>
+    </book>
+    <book id="2">
+        <title>Clean Code</title>
+        <author>Robert C. Martin</author>
+        <publisher>Prentice Hall</publisher>
+        <price>42.99</price>
+        <year>2008</year>
+    </book>
+</library>
+    </textarea>
+    <h2>Add a New Book</h2>
+    <form id="bookForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" required>
+        <label for="author">Author:</label>
+        <input type="text" id="author" required>
+        <label for="publisher">Publisher:</label>
+        <input type="text" id="publisher" required>
+        <label for="price">Price:</label>
+        <input type="number" id="price" step="0.01" required>
+        <label for="year">Year:</label>
+        <input type="number" id="year" required>
+        <button type="button" id="addBook">Add Book</button>
+    </form>
+    <h2>Updated XML Document</h2>
+    <textarea id="updatedXML" rows="10" readonly></textarea>
+    <script>
+        document.getElementById("addBook").addEventListener("click", function() {
+            const parser = new DOMParser();
+            const xml = document.getElementById("xmlDisplay").value;
+            const xmlDoc = parser.parseFromString(xml, "application/xml");
+            const library = xmlDoc.getElementsByTagName("library")[0];
+            const book = xmlDoc.createElement("book");
+            book.setAttribute("id", library.children.length + 1);
+            const title = xmlDoc.createElement("title");
+            title.textContent = document.getElementById("title").value;
+            book.appendChild(title);
+            const author = xmlDoc.createElement("author");
+            author.textContent = document.getElementById("author").value;
+            book.appendChild(author);
+            const publisher = xmlDoc.createElement("publisher");
+            publisher.textContent = document.getElementById("publisher").value;
+            book.appendChild(publisher);
+            const price = xmlDoc.createElement("price");
+            price.textContent = document.getElementById("price").value;
+            book.appendChild(price);
+            const year = xmlDoc.createElement("year");
+            year.textContent = document.getElementById("year").value;
+            book.appendChild(year);
+            library.appendChild(book);
+            const serializer = new XMLSerializer();
+            const updatedXML = serializer.serializeToString(xmlDoc);
+            document.getElementById("updatedXML").value = updatedXML;
+            document.getElementById("bookForm").reset();
+        });
+    </script>
+</body>
+</html>
